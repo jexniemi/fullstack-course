@@ -8,8 +8,14 @@ const Button = (props) => {
 }
 
 const Statistic = (props) => {
+    if (props.field.name === "positiivisia") {
+        var tuloste = (props.field.name + " " + props.field.counter + "%")
+    } else {
+        var tuloste = (props.field.name + " " + props.field.counter)
+    }
+
     return (
-        <p>{props.field.name + " " + props.field.counter}</p>
+        <p>{tuloste}</p>
     )
 
 }
@@ -23,6 +29,7 @@ const Statistics = (props) => {
         <div>
             {tilastot}
             <Statistic field={props.keskiarvo} />
+            <Statistic field={props.positiivisia} />
         </div>
     )
 }
@@ -51,7 +58,8 @@ class App extends React.Component {
             },
             positiivisia: {
                 name: "positiivisia",
-                counter: 0
+                counter: 0,
+                merkki: " %"
             },
             klikkauksia: 0
         }
@@ -60,11 +68,13 @@ class App extends React.Component {
 
     laskeStatistiikka = () => {
         var uusiaKlikkauksia = this.state.klikkauksia + 1;
+        var uusiPositiivisia = this.state.positiivisia;
         var keskiarvo = 0;
         const apuTilastot = this.state.tilastot;
         for (var i = 0; i < apuTilastot.length; i++) {
             if (apuTilastot[i].name === "hyvä") {
                 keskiarvo += apuTilastot[i].counter
+                uusiPositiivisia.counter = Math.round(apuTilastot[i].counter / uusiaKlikkauksia * 100);
             } else if (apuTilastot[i].name === "huono") {
                 keskiarvo -= apuTilastot[i].counter;      
             }
@@ -74,8 +84,10 @@ class App extends React.Component {
         keskiarvo = keskiarvo / uusiaKlikkauksia;
         const uusiKeskiarvo = this.state.keskiarvo;
         uusiKeskiarvo.counter = keskiarvo;
-        this.setState({keskiarvo: uusiKeskiarvo,
-        klikkauksia: uusiaKlikkauksia})
+        this.setState({
+            keskiarvo: uusiKeskiarvo,
+            klikkauksia: uusiaKlikkauksia,
+            positiivisa: uusiPositiivisia})
     }
 
     render() {
@@ -95,15 +107,26 @@ class App extends React.Component {
                 }} />
         )
 
-        return (
-            <div>
-                <h2>anna palautetta</h2>
-                {buttons}
+        let statistiikka;
+        if (this.state.klikkauksia === 0) {
+            statistiikka = <p>ei yhtään palautetta annettu</p>
+        } else {
+            statistiikka = (
+                <div>
                 <h2>statistiikka</h2>
                 <Statistics 
                 tilastot={this.state.tilastot} 
                 keskiarvo={this.state.keskiarvo}
-                positiivisa={this.state.positiivisia}/>
+                positiivisia={this.state.positiivisia}/>
+                </div>
+            )
+        }
+
+        return (
+            <div>
+                <h2>anna palautetta</h2>
+                {buttons}
+                {statistiikka}
             </div>
         )
     }
