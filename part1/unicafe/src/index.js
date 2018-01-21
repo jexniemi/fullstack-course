@@ -8,14 +8,15 @@ const Button = (props) => {
 }
 
 const Statistic = (props) => {
+    let tuloste;
     if (props.field.name === "positiivisia") {
-        var tuloste = (props.field.name + " " + props.field.counter + "%")
+        tuloste = (<tr><td>{props.field.name}</td><td>{props.field.counter+"%"}</td></tr>)
     } else {
-        var tuloste = (props.field.name + " " + props.field.counter)
+        tuloste = (<tr><td>{props.field.name}</td><td>{props.field.counter}</td></tr>)
     }
 
     return (
-        <p>{tuloste}</p>
+        <tbody>{tuloste}</tbody>
     )
 
 }
@@ -27,9 +28,11 @@ const Statistics = (props) => {
 
     return (
         <div>
+            <table>
             {tilastot}
             <Statistic field={props.keskiarvo} />
             <Statistic field={props.positiivisia} />
+            </table>
         </div>
     )
 }
