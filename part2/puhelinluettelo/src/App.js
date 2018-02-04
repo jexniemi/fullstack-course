@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,6 +14,14 @@ class App extends React.Component {
       filterValue: ''
     }
     this.addPerson = this.addPerson.bind(this)
+  }
+
+  componentWillMount() {
+    axios
+      .get("http://localhost:3001/persons")
+      .then(response => {
+        this.setState({ persons: response.data })
+      })
   }
 
   addPerson = (e) => {
@@ -32,14 +41,14 @@ class App extends React.Component {
   }
 
   render() {
-    let numerot = 
+    let Numerot = () => (
     this.state.filterValue ?
     this.state.persons.filter(person => person.name.includes(this.state.filterValue)).map((person, id) => (
     <p key={id}>{person.name} {" " + person.number}</p> ))
       : 
     (this.state.persons.map((person, id) => (
       <p key={id}>{person.name} {" " + person.number}</p>
-    )))
+    ))))
 
     return (
       <div>
@@ -58,12 +67,12 @@ class App extends React.Component {
             <button type="submit" onClick={this.addPerson}>lisää</button>
           </div>
           <div>
-            debug: {this.state.newName} <br/>
-            numero: {this.state.newNumber} <br/>
+            debug nimi: {this.state.newName} <br/>
+            debug numero: {this.state.newNumber} <br/>
           </div>
         </form>
         <h2>Numerot</h2>
-        {numerot}
+        <Numerot />
       </div>
     )
   }
