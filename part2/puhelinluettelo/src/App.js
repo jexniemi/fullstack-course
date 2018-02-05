@@ -32,9 +32,14 @@ class App extends React.Component {
     e.preventDefault()
     for (var i = 0; i < this.state.persons.length; i++) {
       if (this.state.persons[i].name === this.state.newName) {
-        alert("person is already on the list")
-        this.setState({ newName: '', newNumber: '' })
-        return
+        if (window.confirm(this.state.persons[i].nimi + " on jo luettelossa, korvataanko vanha numero uudella?")) {
+          let newPersons = this.state.persons
+          let newPerson = { name: this.state.newName, number: this.state.newNumber }
+          newPersons[i] = newPerson
+          peopleService.update(i + 1, newPerson)
+          this.setState({newName: '', newNumber: '' })
+          return
+        }  
       }
     }
 
@@ -65,8 +70,7 @@ class App extends React.Component {
     })
     .catch(error => {
       console.log('fail')
-    })
-    
+    })   
   }
   }
 
