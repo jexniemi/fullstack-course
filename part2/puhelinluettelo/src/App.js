@@ -1,5 +1,17 @@
 import React from 'react';
 import peopleService from './services/peopleService'
+import './App.css'
+
+const Notification = ({ message }) => {
+  if (message === null || message === '') {
+    return null
+  }
+  return (
+    <div className="message">
+      {message}
+    </div>
+  )
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -14,7 +26,8 @@ class App extends React.Component {
       filteredPersons: [],
       newName: '',
       newNumber: '',
-      filterValue: ''
+      filterValue: '',
+      message: ''
     }
     this.addPerson = this.addPerson.bind(this)
     this.filterPersons = this.filterPersons.bind(this)
@@ -37,7 +50,10 @@ class App extends React.Component {
           let newPerson = { name: this.state.newName, number: this.state.newNumber }
           newPersons[i] = newPerson
           peopleService.update(i + 1, newPerson)
-          this.setState({newName: '', newNumber: '' })
+          this.setState({newName: '', newNumber: '', message: 'person updated'})
+          setTimeout(() => {
+            this.setState({message: null})
+          }, 5000)
           return
         }  
       }
@@ -47,7 +63,10 @@ class App extends React.Component {
     let newPerson = { name: this.state.newName, number: this.state.newNumber }
     newPersons.push(newPerson)
     peopleService.create(newPerson)
-    this.setState({ persons: newPersons, newName: '', newNumber: '' })
+    this.setState({ persons: newPersons, newName: '', newNumber: '', message: 'person added' })
+    setTimeout(() => {
+      this.setState({message: null})
+    }, 5000)
   }
 
   filterPersons = (e) => {
@@ -65,7 +84,10 @@ class App extends React.Component {
       console.log('success!')
       peopleService.getAll()
       .then(response => {
-      this.setState({ persons: response.data })
+      this.setState({ persons: response.data, message: 'person removed' })
+      setTimeout(() => {
+        this.setState({message: null})
+      }, 5000)
     })
     })
     .catch(error => {
@@ -92,6 +114,7 @@ class App extends React.Component {
 
     return (
       <div>
+        <Notification message={this.state.message}/>
         <h2>Puhelinluettelo</h2>
         <br />
         Rajaa näytettäviä
