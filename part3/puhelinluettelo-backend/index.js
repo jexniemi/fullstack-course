@@ -1,10 +1,14 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-var morgan = require('morgan')
+const morgan = require('morgan')
+const cors = require('cors')
 
+app.use(express.static('build'))
+app.use(cors())
 app.use(morgan('tiny'))
 app.use(bodyParser.json());
+
 
 let persons = [
     {
@@ -46,7 +50,7 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== person)
+    persons = persons.filter(person => person.id !== id)
 
     response.status(204).end()
 })

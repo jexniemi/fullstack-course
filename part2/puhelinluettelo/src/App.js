@@ -38,18 +38,24 @@ class App extends React.Component {
     peopleService.getAll()
       .then(response => {
         this.setState({ persons: response.data })
+        this.state.persons.forEach(person => console.log(person.id))
       })
   }
 
   addPerson = (e) => {
     e.preventDefault()
+    var found = false
     for (var i = 0; i < this.state.persons.length; i++) {
       if (this.state.persons[i].name === this.state.newName) {
-        if (window.confirm(this.state.persons[i].nimi + " on jo luettelossa, korvataanko vanha numero uudella?")) {
+        console.log(this.state.persons[i].id)
+        found = true;
+        let xid = this.state.persons[i].id
+        if (window.confirm(this.state.persons[i].name + " on jo luettelossa, korvataanko vanha numero uudella?")) {
           let newPersons = this.state.persons
-          let newPerson = { name: this.state.newName, number: this.state.newNumber }
+          let newPerson = { name: this.state.persons[i].name, number: this.state.newNumber }
           newPersons[i] = newPerson
-          peopleService.update(i + 1, newPerson)
+          peopleService.update(xid, newPerson)
+          console.log(this.state.persons[i].id)
           this.setState({newName: '', newNumber: '', message: 'person updated'})
           setTimeout(() => {
             this.setState({message: null})
@@ -59,6 +65,8 @@ class App extends React.Component {
       }
     }
 
+    if (found === false) {
+
     let newPersons = this.state.persons
     let newPerson = { name: this.state.newName, number: this.state.newNumber }
     newPersons.push(newPerson)
@@ -67,6 +75,7 @@ class App extends React.Component {
     setTimeout(() => {
       this.setState({message: null})
     }, 5000)
+  }
   }
 
   filterPersons = (e) => {
