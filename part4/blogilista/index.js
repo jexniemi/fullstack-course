@@ -7,11 +7,15 @@ const mongoose = require('mongoose')
 const Blog = require('./models/blog')
 const blogsRouter = require('./controllers/blogs')
 
+if ( process.env.NODE_ENV !== 'production' ) {
+    require('dotenv').config()
+}
+
 
 mongoose
-  .connect('mongodb://testuser:1234@ds247078.mlab.com:47078/bloglistfullstack')
+  .connect(process.env.MONGODB_URI)
   .then( () => {
-    console.log('connected to database', 'mongodb://testuser:1234@ds247078.mlab.com:47078/bloglistfullstack')
+    console.log('connected to database', process.env.MONGODB_URI)
   })
   .catch( err => {
     console.log(err)
