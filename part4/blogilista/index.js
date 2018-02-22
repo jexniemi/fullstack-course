@@ -4,21 +4,10 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
-
-const Blog = mongoose.model('Blog', {
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
-})
-
-module.exports = Blog
+const Blog = require('./models/blog')
 
 app.use(cors())
 app.use(bodyParser.json())
-
-const mongoUrl = 'mongodb://testuser:1234@ds247078.mlab.com:47078/bloglistfullstack'
-mongoose.connect(mongoUrl)
 
 app.get('/api/blogs', (request, response) => {
   Blog
