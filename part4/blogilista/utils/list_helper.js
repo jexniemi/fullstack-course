@@ -5,9 +5,9 @@ const dummy = (blogs) => {
 const totalLikes = (blogs) => {
     let likes = 0;
     
-    for (blog in blogs) {
-        likes += blog.likes;
-    }
+    blogs.forEach((blog) => {
+        likes += blog.likes
+    })
 
     return likes
 }
