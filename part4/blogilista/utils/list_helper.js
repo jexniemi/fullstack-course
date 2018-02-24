@@ -12,7 +12,22 @@ const totalLikes = (blogs) => {
     return likes
 }
 
+const favoriteBlog = (blogs) => {
+    let mostPopular = {
+        likes: 0
+    }
+
+    blogs.forEach((blog) => {
+        if (blog.likes >= mostPopular.likes) {
+            mostPopular = blog
+        }
+    })
+
+    return mostPopular
+}
+
 module.exports = {
     dummy,
-    totalLikes
+    totalLikes,
+    favoriteBlog
 }
