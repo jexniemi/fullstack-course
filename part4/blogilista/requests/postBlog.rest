@@ -1,10 +1,11 @@
 POST http://localhost:3002/api/blogs
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hdHRpNSIsImlkIjoiNWE5MmYyZGQ0MGU4MGUyOWRjMWIzMDJkIiwiaWF0IjoxNTE5NTgzNTgyfQ.E7_tgfx4tljfNMpXqy8IgVynOU9JogAfJXJ6LjA5mFE
 
 {
-"title": "ASDSWW",
-  "author": "AASWd",
+"title": "Hes",
+  "author": "Sa",
   "url": "a",
   "likes": 0,
-  "user": "5a92ef05fd25ce1688d91e04"
+  "user": "5a92f6b2938a2b0a48b0790d"
 }
