@@ -70,25 +70,34 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-    try {
-        const result = await Blog.findByIdAndRemove(request.params.id)
-        response.status(204).end()
-    } catch (exception) {
-        console.log(exception)
-        response.status(400).end({ error: 'malformatted id' })
+    if (request.token) {
+        try {
+            const blog = await Blog.findById(request.params.id)
+            const decodedToken = jwt.verify(request.token, process.env.SECRET)
+            if (decodedToken.id === blog.user.toString()){
+                const result = await Blog.findByIdAndRemove(request.params.id)
+                console.log(result)
+                response.status(204).end()
+            } else {
+                console.log("This user is not authorized to remove this blog")
+                response.status(401).json({ error: "This user is not authorized to remove this blog" }).end()
+            }
+            
+        } catch (exception) {
+            response.status(400).send({ error: 'malformatted id' })
+        }
+    } else {
+        response.status(401).json({ error: "Missing authorization token" }).end()
     }
 
-
-
-    // WORKS:
-    // Blog
-    //     .findByIdAndRemove(request.params.id)
-    //     .then(result => {
-    //         response.status(204).end()
-    //     })
-    //     .catch((error) => {
-    //         response.status(400).end({ error: 'malformatted id' })
-    //     })
+    // Works as well:
+    // try {
+    //     const result = await Blog.findByIdAndRemove(request.params.id)
+    //     response.status(204).end()
+    // } catch (exception) {
+    //     console.log(exception)
+    //     response.status(400).end({ error: 'malformatted id' })
+    // }
 })
 
 module.exports = blogsRouter

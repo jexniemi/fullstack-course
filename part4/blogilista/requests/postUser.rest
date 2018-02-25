@@ -2,9 +2,9 @@ POST http://localhost:3002/api/users
 content-type: application/json
 
 {
-    "username": "matti5",
+    "username": "testibloginpoistaja1",
     "name": "heya",
     "password": "salasana",
     "adult": true,
-    "blogs": ["5a92edd1ff6ea6082c32db8c", "5a92e33cd1840b22444b3a6e"]
+    "blogs": ["5a422ba71b54a676234d17fb"]
 }
