@@ -23,7 +23,8 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-   const body = request.body
+  try {
+    const body = request.body
 
    if (body.title === undefined) {
        return response.status(400).json({error: 'title is missing'})
@@ -46,6 +47,10 @@ blogsRouter.post('/', async (request, response) => {
     //     .then(result => {
     //         response.status(201).json(result)
     //     })
+} catch (exception) {
+    console.log(exception)
+    response.status(500).json({ error: 'something went wrong...' })
+  }
 })
 
 module.exports = blogsRouter
