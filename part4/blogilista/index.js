@@ -21,6 +21,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use('/api/blogs', blogsRouter)
 
+// Sovelluksen käynnistäminen tapahtuu nyt server-muuttujassa olevan olion kautta
 const server = http.createServer(app)
 
 server.listen(config.port, () => {
