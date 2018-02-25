@@ -2,8 +2,9 @@ POST http://localhost:3002/api/blogs
 content-type: application/json
 
 {
-"title": "Hello world7",
+"title": "ASDSWW",
   "author": "AASWd",
   "url": "a",
-  "likes": 0
+  "likes": 0,
+  "user": "5a92ef05fd25ce1688d91e04"
 }
