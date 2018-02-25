@@ -30,11 +30,10 @@ blogsRouter.post('/', async (request, response) => {
     const body = request.body
 
     try {
-        const token = getTokenFrom(request)
-        const decodedToken = jwt.verify(token, process.env.SECRET)
-        if (!token || !decodedToken.id) {
+        const decodedToken = jwt.verify(request.token, process.env.SECRET)
+        if (!request.token || !decodedToken.id) {
             return response.status(401).json({ error: 'token missing or invalid' })
-          }
+        }
 
         if (body.title === undefined) {
             return response.status(400).json({ error: 'title is missing' })
@@ -61,12 +60,12 @@ blogsRouter.post('/', async (request, response) => {
         //         response.status(201).json(result)
         //     })
     } catch (exception) {
-        if (exception.name === 'JsonWebTokenError' ) {
+        if (exception.name === 'JsonWebTokenError') {
             response.status(401).json({ error: exception.message })
-          } else {
+        } else {
             console.log(exception)
             response.status(500).json({ error: 'something went wrong...' })
-          }
+        }
     }
 })
 
