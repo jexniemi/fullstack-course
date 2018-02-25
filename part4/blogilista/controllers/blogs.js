@@ -41,11 +41,13 @@ blogsRouter.post('/', async (request, response) => {
 
         const user = await User.findById(body.user)
 
+        const likes = body.likes > 0 ? body.likes : 0
+
         const blog = new Blog({
             title: body.title,
             author: body.author,
             url: body.url,
-            likes: 0,
+            likes: likes,
             user: user._id
         })
 
@@ -66,6 +68,18 @@ blogsRouter.post('/', async (request, response) => {
             console.log(exception)
             response.status(500).json({ error: 'something went wrong...' })
         }
+    }
+})
+
+blogsRouter.put('/:id', async (request, response) => {
+    const body = request.body
+    const blog = Blog.format(body)
+
+    try {
+        const result = await Blog.findByIdAndUpdate(request.params.id, blog)
+        response.status(204).end()
+    } catch (exception) {
+        response.status(400).send({ error: 'malformatted id' })
     }
 })
 

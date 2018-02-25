@@ -28,6 +28,24 @@ usersRouter.post('/', async (request, response) => {
         const saltRounds = 10
         const passwordHash = await bcryptjs.hash(body.password, saltRounds)
 
+        let users = []
+        const usersFromDB = await User.find({})
+        users = usersFromDB.map(formatUser)
+        const matches = users.filter((user) => {
+            return user.username === body.username
+        })
+
+        if (matches.length > 0) {
+            response.status(400).json({ error: "This username is already take" }).end()
+            return;
+        }
+
+        if (body.password.length < 3 ) {
+            response.status(400).json({ error: "Password must be longer than 3 characters" }).end()
+            return;
+        }
+        body.adult = body.adult === undefined ? true : body.adult
+
         const user = new User({
             username: body.username,
             name: body.name,

@@ -32,3 +32,22 @@ describe('favorite blog', () => {
         expect(result).toEqual(mockBlogs.listWithManyBlogs[2])
     })
 })
+
+describe('most likes', () => {
+    test('returns blog with most likes', () => {
+        const result = listHelper.favoriteBlog(mockBlogs.listWithManyBlogs)
+        expect(result).toEqual(mockBlogs.listWithManyBlogs[2])
+    })
+})
+
+describe('most blogs', () => {
+    })
+
+    test('returns person with most blogs', () => {
+        const result = listHelper.mostBlogs(mockBlogs.listWithManyBlogs)
+        expect(result).toEqual(
+        {
+            author: "Robert C. Martin",
+            blogs: 3
+        })
+    })
