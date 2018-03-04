@@ -20,7 +20,7 @@ const initialState = {
       case 'BAD':
         return {
             ...state,
-            bad: state.ok + 1
+            bad: state.bad + 1
         }
       case 'ZERO':
         return initialState
