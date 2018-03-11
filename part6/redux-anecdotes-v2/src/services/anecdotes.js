@@ -5,4 +5,9 @@ const getAll = async () => {
     return response.data
 }
 
-export default { getAll }
+const createNew = async (content) => {
+    const response = await axios.post('http://localhost:3001/anecdotes', {  content, votes: 0 })
+    return response.data
+}
+
+export default { getAll, createNew }
