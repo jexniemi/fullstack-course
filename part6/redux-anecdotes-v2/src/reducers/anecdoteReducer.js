@@ -36,10 +36,20 @@ const anecdoteReducer = (store = [], action) => {
   return store
 }
 
-export const voteAnecdote = (id) => {
-  return {
-    type: 'VOTE',
-    id: id
+// export const voteAnecdote = (id) => {
+//   return {
+//     type: 'VOTE',
+//     id: id
+//   }
+// }
+
+export const voteAnecdote = (anecdote) => {
+  return async (dispatch) => {
+    const votedAnecdote = await anecdotesService.update(anecdote.id, { ...anecdote, votes: anecdote.votes + 1 })
+    dispatch({
+      type: 'VOTE',
+      ...votedAnecdote
+    })
   }
 }
 
@@ -50,6 +60,7 @@ export const voteAnecdote = (id) => {
 //   }
 // }
 
+// WITH REDUX-THUNK:
 export const createAnecdote = (content) => {
   return async (dispatch) => {
     let newAnecdote = await anecdotesService.createNew(content)
