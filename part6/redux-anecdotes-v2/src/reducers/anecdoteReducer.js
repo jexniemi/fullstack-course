@@ -9,7 +9,7 @@
 
 import anecdotesService from '../services/anecdotes'
 
-const getId = () => (100000*Math.random()).toFixed(0)
+const getId = () => (100000 * Math.random()).toFixed(0)
 
 const asObject = (anecdote) => {
   return {
@@ -19,14 +19,15 @@ const asObject = (anecdote) => {
 }
 
 const anecdoteReducer = (store = [], action) => {
-  if (action.type==='VOTE') {
-    const old = store.filter(a => a.id !==action.id)
+  if (action.type === 'VOTE') {
+    const old = store.filter(a => a.id !== action.id)
     const voted = store.find(a => a.id === action.id)
 
-    return [...old, { ...voted, votes: voted.votes+1 } ]
+    return [...old, { ...voted, votes: voted.votes + 1 }]
   }
   if (action.type === 'CREATE') {
-    return [...store, { content: action.content, id: getId(), votes:0 }]
+    console.log('CREATE', action)
+    return [...store, { content: action.data.content, id: getId(), votes: 0 }]
   }
   if (action.type === 'INIT_ANECDOTES') {
     return action.data
@@ -42,10 +43,21 @@ export const voteAnecdote = (id) => {
   }
 }
 
+// export const createAnecdote = (content) => {
+//   return {
+//     type: 'CREATE',
+//     ...asObject(content)
+//   }
+// }
+
 export const createAnecdote = (content) => {
-  return {
-    type: 'CREATE',
-    ...asObject(content)
+  return async (dispatch) => {
+    let newAnecdote = await anecdotesService.createNew(content)
+    console.log('creating new anecdote:', newAnecdote)
+    dispatch({
+      type: 'CREATE',
+      data: newAnecdote
+    })
   }
 }
 
@@ -53,7 +65,7 @@ export const anecdoteInitialization = () => {
   return async (dispatch) => {
     const anecdotes = await anecdotesService.getAll()
     console.log('initializing anecdotes', anecdotes)
-    dispatch ({
+    dispatch({
       type: 'INIT_ANECDOTES',
       data: anecdotes
     })
